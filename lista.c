@@ -28,3 +28,39 @@ void exibir_biblioteca(No* topo) {
         atual = atual->proximo; // anda pro proximo no
     }
 }
+
+struct Livro* buscar_livro(No* topo, int id) {
+    No* atual = topo;
+
+    while (atual != NULL) {
+        if (atual->livro.id == id) {
+            return &(atual->livro); // Retorna o endereco do livro encontrado
+        }
+        atual = atual->proximo;
+    }
+    return NULL; // se nao encontrar, retorna vazio
+}
+
+// Remove um livro pelo ID
+int remover_livro(No** topo, int id) {
+    No* atual = *topo;
+    No* anterior = NULL;
+
+    // procura o livro guardando o no anterior
+    while (atual != NULL && atual->livro.id != id) {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+    if (atual == NULL) return 0; // livro nao encontrado
+
+    
+    if (anterior == NULL) {
+        *topo = atual->proximo;
+    } else { // Se estiver no meio ou fim
+        anterior->proximo = atual->proximo;
+    }
+
+    free(atual); // libera a memoria do no deletado
+    return 1;
+}
