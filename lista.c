@@ -64,3 +64,34 @@ int remover_livro(No** topo, int id) {
     free(atual); // libera a memoria do no deletado
     return 1;
 }
+
+int emprestar_livro(No* topo, int id) {
+    No* atual = topo;
+
+    while (atual != NULL) {
+        if (atual->livro.id == id) {
+            if (atual->livro.quantidade > 0) {
+                atual->livro.quantidade--; // diminui 1 no estoque de livros
+                return 1; //funciona
+            } else {
+                printf("Desculpe, o livro '%s' esta esgotado no momento\n", atual->livro.titulo);
+                return 0; // sem estoque
+            }
+        }
+        atual = atual->proximo;
+    }
+    return 0; // livro n encontrado
+}
+
+int devolver_livro(No* topo, int id) {
+    No* atual = topo;
+
+    while (atual != NULL) {
+        if (atual->livro.id == id) {
+            atual->livro.quantidade++; // add 1 no estoque do livro
+            return 1; 
+        }
+        atual = atual->proximo;
+    }
+    return 0; // livro n encontrado
+}
