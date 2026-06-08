@@ -95,3 +95,15 @@ int devolver_livro(No* topo, int id) {
     }
     return 0; // livro n encontrado
 }
+
+void liberar_lista(No* topo)
+{
+    No* temp;
+
+    while (topo != NULL)
+    {
+        temp = topo;
+        topo = topo->proximo;
+        free(temp);
+    }
+}
