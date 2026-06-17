@@ -9,7 +9,6 @@ typedef struct No {
 } No;
 
 No* criar_lista();
-
 void inserir_livro(No** topo, struct Livro novo_livro);
 void exibir_biblioteca(No* topo);
 struct Livro* buscar_livro(No* topo, int id);       

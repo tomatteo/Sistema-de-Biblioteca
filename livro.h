@@ -7,6 +7,7 @@ struct Livro {
     char autor[50];
     int ano_publicacao;
     int quantidade;
+    int qtd_maxima; 
 };
 
 struct Livro criar_livro();

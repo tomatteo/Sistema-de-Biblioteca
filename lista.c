@@ -3,105 +3,99 @@
 #include "lista.h"
 
 No* criar_lista() {
-    return NULL; // lista comeca vazia
+    return NULL;
 }
 
 void inserir_livro(No** topo, struct Livro novo_livro) {
-    No* novo_no = (No*)malloc(sizeof(No)); // aloca memoria pro no
+    No* novo_no = (No*)malloc(sizeof(No));
     if (novo_no == NULL) return;
 
-    novo_no->livro = novo_livro; // poem o livro no no
-    novo_no->proximo = *topo;    // aponta pro antigo primeiro
-    *topo = novo_no;             // o novo no vira o primeiro da lista
+    novo_no->livro = novo_livro;
+    novo_no->proximo = *topo;
+    *topo = novo_no;
 }
 
 void exibir_biblioteca(No* topo) {
-    No* atual = topo; // comeca do inicio
+    No* atual = topo; 
     
+    printf("===== LIVROS CADASTRADOS =====\n");
     if (atual == NULL) {
         printf("Biblioteca vazia!\n");
+        printf("==============================\n");
         return;
     }
 
     while (atual != NULL) {
-        printf("ID: %d | Titulo: %s\n", atual->livro.id, atual->livro.titulo);
-        atual = atual->proximo; // anda pro proximo no
+        printf("ID: %d | Titulo: %s (Estoque: %d)\n", atual->livro.id, atual->livro.titulo, atual->livro.quantidade);
+        atual = atual->proximo;
     }
+    printf("==============================\n");
 }
 
 struct Livro* buscar_livro(No* topo, int id) {
-    No* atual = topo;
-
-    while (atual != NULL) {
-        if (atual->livro.id == id) {
-            return &(atual->livro); // Retorna o endereco do livro encontrado
+    No* current = topo;
+    while (current != NULL) {
+        if (current->livro.id == id) {
+            return &(current->livro);
         }
-        atual = atual->proximo;
+        current = current->proximo;
     }
-    return NULL; // se nao encontrar, retorna vazio
+    return NULL;
 }
 
-// Remove um livro pelo ID
 int remover_livro(No** topo, int id) {
     No* atual = *topo;
     No* anterior = NULL;
 
-    // procura o livro guardando o no anterior
     while (atual != NULL && atual->livro.id != id) {
         anterior = atual;
         atual = atual->proximo;
     }
 
-    if (atual == NULL) return 0; // livro nao encontrado
+    if (atual == NULL) return 0;
 
-    
     if (anterior == NULL) {
         *topo = atual->proximo;
-    } else { // Se estiver no meio ou fim
+    } else {
         anterior->proximo = atual->proximo;
     }
 
-    free(atual); // libera a memoria do no deletado
+    free(atual);
     return 1;
 }
 
 int emprestar_livro(No* topo, int id) {
     No* atual = topo;
-
     while (atual != NULL) {
         if (atual->livro.id == id) {
             if (atual->livro.quantidade > 0) {
-                atual->livro.quantidade--; // diminui 1 no estoque de livros
-                return 1; //funciona
+                atual->livro.quantidade--;
+                return 1;
             } else {
-                printf("Desculpe, o livro '%s' esta esgotado no momento\n", atual->livro.titulo);
-                return 0; // sem estoque
+                printf("Desculpe, o livro '%s' esta esgotado no momento.\n", atual->livro.titulo);
+                return 0;
             }
         }
         atual = atual->proximo;
     }
-    return 0; // livro n encontrado
+    return 0;
 }
 
 int devolver_livro(No* topo, int id) {
     No* atual = topo;
-
     while (atual != NULL) {
         if (atual->livro.id == id) {
-            atual->livro.quantidade++; // add 1 no estoque do livro
-            return 1; 
+            atual->livro.quantidade++;
+            return 1;
         }
         atual = atual->proximo;
     }
-    return 0; // livro n encontrado
+    return 0;
 }
 
-void liberar_lista(No* topo)
-{
+void liberar_lista(No* topo) {
     No* temp;
-
-    while (topo != NULL)
-    {
+    while (topo != NULL) {
         temp = topo;
         topo = topo->proximo;
         free(temp);
